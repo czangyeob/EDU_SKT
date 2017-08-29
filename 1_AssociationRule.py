@@ -2,33 +2,10 @@
 
 # 연관규칙분석
 # 사전 설치
-# C:\Users\Matthew\Downloads>pip install scipy-0.19.1-cp36-cp36m-win_amd64.whl
-# Processing c:\users\matthew\downloads\scipy-0.19.1-cp36-cp36m-win_amd64.whl
-# Requirement already satisfied: numpy>=1.8.2 in c:\python36\lib\site-packages (from scipy==0.19.1)
-# Installing collected packages: scipy
-# Successfully installed scipy-0.19.1
-#
-# C:\Users\Matthew\Downloads>pip install mlxtend
-# Collecting mlxtend
-#   Using cached mlxtend-0.7.0-py2.py3-none-any.whl
-# Requirement already satisfied: scipy>=0.17 in c:\python36\lib\site-packages (from mlxtend)
-# Requirement already satisfied: numpy>=1.10.4 in c:\python36\lib\site-packages (from mlxtend)
-# Installing collected packages: mlxtend
-# Successfully installed mlxtend-0.7.0
-# C:\Users\Matthew\Downloads>pip install sklearn
-# Collecting sklearn
-#   Downloading sklearn-0.0.tar.gz
-# Collecting scikit-learn (from sklearn)
-#   Downloading scikit_learn-0.19.0-cp36-cp36m-win_amd64.whl (4.3MB)
-#     100% |████████████████████████████████| 4.3MB 410kB/s
-# Building wheels for collected packages: sklearn
-#   Running setup.py bdist_wheel for sklearn ... done
-#   Stored in directory: C:\Users\Matthew\AppData\Local\pip\Cache\wheels\d7\db\a3\1b8041ab0be63b5c96c503df8e757cf205c2848cf9ef55f85e
-# Successfully built sklearn
-# Installing collected packages: scikit-learn, sklearn
-# Successfully installed scikit-learn-0.19.0 sklearn-0.0
 # C:\Users\Matthew\Downloads>pip install numpy-1.13.1+mkl-cp36-cp36m-win_amd64.whl
-
+# C:\Users\Matthew\Downloads>pip install scipy-0.19.1-cp36-cp36m-win_amd64.whl
+# C:\Users\Matthew\Downloads>pip install mlxtend
+# C:\Users\Matthew\Downloads>pip install sklearn
 
 # 필요한 라이브러리 로드
 import pandas as pd
@@ -100,6 +77,9 @@ rules[ (rules['confidence'] > 0.75) &
        (rules['consequents'] == frozenset({'Dead'})) ]
 
 
+
+import pandas as pd
+
 transaction = open('./data/groceries.csv','r').readlines()
 len(transaction)
 gloceries = []
@@ -107,6 +87,34 @@ for line in transaction:
     line = line.replace('\n','').split(',')
     gloceries.append(line)
 len(gloceries)
+
+
+# pip install pytagcloud
+# pip install pygame
+# pip install simplejson
+from collections import Counter
+import pytagcloud
+import itertools
+
+nouns = list(itertools.chain(*gloceries))
+count = Counter(nouns)
+tag2 = count.most_common(100)
+taglist = pytagcloud.make_tags(tag2, maxsize=80)
+pytagcloud.create_tag_image(taglist, './wordcloud.jpg', size=(1024, 768), fontname='Coustard', rectangular=False)
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Plot histogram using matplotlib bar().
+import pandas as pd
+df = pd.DataFrame.from_dict(count, orient='index')
+df.columns = ['Count']
+view = df.sort_values('Count',ascending=False)[0:30]
+view.plot(kind='bar')
+
+
+### Rule
 
 oht = OnehotTransactions()
 oht_ary = oht.fit(gloceries).transform(gloceries)
