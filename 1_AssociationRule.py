@@ -17,7 +17,6 @@ titanic.head() # 가장 앞 5개의 데이터를 출력
 titanic.tail() # 가장 뒤 5개의 데이터를 출력
 
 # Remove "Name" column
-
 titanic_ar = titanic.iloc[:, 1:5]
 titanic_ar.head()
 
@@ -102,12 +101,12 @@ tag2 = count.most_common(100)
 taglist = pytagcloud.make_tags(tag2, maxsize=80)
 pytagcloud.create_tag_image(taglist, './wordcloud.jpg', size=(1024, 768), fontname='Coustard', rectangular=False)
 
-
+# Plot histogram using matplotlib bar().
 import numpy as np
 import matplotlib.pyplot as plt
-
-# Plot histogram using matplotlib bar().
 import pandas as pd
+
+
 df = pd.DataFrame.from_dict(count, orient='index')
 df.columns = ['Count']
 view = df.sort_values('Count',ascending=False)[0:30]
@@ -130,6 +129,7 @@ rules = association_rules(frequent_itemsets, metric="confidence", min_threshold=
 rules
 
 rules = association_rules(frequent_itemsets, metric="lift", min_threshold=0)
+rules
 
 # 길이 정보를 갖는 열 추가
 rules["antecedant_len"] = rules["antecedants"].apply(lambda x: len(x))
